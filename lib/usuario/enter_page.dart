@@ -52,7 +52,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           Navigator.of(context).push(
             MaterialPageRoute(
                 builder: (context) => UserPage()),
-          ),
+          );
         } else {
           userId = await auth.signUp(_email, _password);
 //          auth.sendEmailVerification();
