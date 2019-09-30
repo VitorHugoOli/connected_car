@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Connected_car</string>
+    <string name="facebook_app_id">415390589089284</string>
+    <string name="fb_login_protocol_scheme">fb415390589089284</string>
+</resources>
