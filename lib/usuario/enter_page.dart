@@ -1,4 +1,6 @@
 import 'package:connected_car/service/authentication.dart';
+import 'package:connected_car/service/storage.dart';
+import 'package:connected_car/usuario/pageController.dart';
 import 'package:connected_car/usuario/userPage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,6 +19,9 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   final _formKey = new GlobalKey<FormState>();
 
   String _email;
+  String _name;
+  String _status;
+  String _bio;
   String _password;
   String _errorMessage;
 
@@ -25,6 +30,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   bool _isIos;
   bool _isLoading;
   Auth auth = new Auth();
+  Store store = new Store();
 
   // Check if form is valid before perform login or signup
   bool _validateAndSave() {
@@ -51,13 +57,20 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           print('Signed in: $userId');
           Navigator.of(context).push(
             MaterialPageRoute(
-                builder: (context) => UserPage()),
+                builder: (context) => ControladorPagina()),
           );
         } else {
-          userId = await auth.signUp(_email, _password);
+          userId = await auth.signUp(_email, _password,_name);
+          if(userId!=null) {
+            await store.createUserDate(userId, _status, _bio);
+          }
 //          auth.sendEmailVerification();
 //          _showVerifyEmailSentDialog();
           print('Signed up user: $userId');
+          Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => ControladorPagina()),
+          );
         }
         setState(() {
           _isLoading = false;
@@ -88,22 +101,6 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     super.initState();
   }
 
-  void _changeFormToSignUp() {
-    _formKey.currentState.reset();
-    _errorMessage = "";
-    setState(() {
-      _formMode = FormMode.SIGNUP;
-    });
-  }
-
-  void _changeFormToLogin() {
-    _formKey.currentState.reset();
-    _errorMessage = "";
-    setState(() {
-      _formMode = FormMode.LOGIN;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     _isIos = Theme.of(context).platform == TargetPlatform.iOS;
@@ -124,6 +121,22 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
         ),
       ),
     );
+  }
+
+  void _changeFormToSignUp() {
+    _formKey.currentState.reset();
+    _errorMessage = "";
+    setState(() {
+      _formMode = FormMode.SIGNUP;
+    });
+  }
+
+  void _changeFormToLogin() {
+    _formKey.currentState.reset();
+    _errorMessage = "";
+    setState(() {
+      _formMode = FormMode.LOGIN;
+    });
   }
 
   Widget _showCircularProgress() {
@@ -157,6 +170,26 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
   }
 
   Widget _showBody() {
+    Widget child;
+    if (_formMode == FormMode.LOGIN ) {
+      child =  Column(
+        children: <Widget>[
+          _showEmailInput(),
+          _showPasswordInput()
+        ],
+      );
+    } else {
+    child = Column(
+      children: <Widget>[
+        _showEmailInput(),
+        _showPasswordInput(),
+        _showNameInput(),
+        _showStatusInput(),
+        _showBioInput()
+      ],
+    );
+    }
+
     return new Container(
         padding: EdgeInsets.all(16.0),
         child: new Form(
@@ -164,9 +197,7 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
-
-              _showEmailInput(),
-              _showPasswordInput(),
+               child,
               _showPrimaryButton(),
               _showSecondaryButton(),
               _showErrorMessage(),
@@ -196,6 +227,10 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: new TextFormField(
+        style: TextStyle(
+          color: Colors.white
+        ),
+        cursorColor: Colors.white,
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
@@ -212,10 +247,85 @@ class _LoginSignUpPageState extends State<LoginSignUpPage> {
     );
   }
 
+  Widget _showNameInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        style: TextStyle(
+          color: Colors.white
+        ),
+        cursorColor: Colors.white,
+        maxLines: 1,
+        keyboardType: TextInputType.text,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Name',
+            hintStyle: TextStyle(color: Colors.white),
+            icon: new Icon(
+              Icons.person,
+              color: Colors.grey,
+            )),
+        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+        onSaved: (value) => _name = value.trim(),
+      ),
+    );
+  }
+
+  Widget _showStatusInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        style: TextStyle(
+          color: Colors.white
+        ),
+        cursorColor: Colors.white,
+        maxLines: 1,
+        keyboardType: TextInputType.multiline,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Status',
+            hintStyle: TextStyle(color: Colors.white),
+            icon: new Icon(
+              Icons.mood,
+              color: Colors.grey,
+            )),
+        onSaved: (value) => _status = value.trim(),
+      ),
+    );
+  }
+
+  Widget _showBioInput() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
+      child: new TextFormField(
+        style: TextStyle(
+          color: Colors.white
+        ),
+        cursorColor: Colors.white,
+        maxLines: 1,
+        keyboardType: TextInputType.text,
+        autofocus: false,
+        decoration: new InputDecoration(
+            hintText: 'Bio',
+            hintStyle: TextStyle(color: Colors.white),
+            icon: new Icon(
+              Icons.info,
+              color: Colors.grey,
+            )),
+        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+        onSaved: (value) => _bio = value.trim(),
+      ),
+    );
+  }
+
   Widget _showPasswordInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
+        style: TextStyle(
+            color: Colors.white
+        ),
+        cursorColor: Colors.white,
         maxLines: 1,
         obscureText: true,
         autofocus: false,

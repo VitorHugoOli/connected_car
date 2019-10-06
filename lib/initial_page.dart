@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:connected_car/usuario/enter_page.dart';
+import 'package:connected_car/usuario/pageController.dart';
+import 'package:connected_car/usuario/userPage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:http/http.dart' as http;
@@ -78,16 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      bottomNavigationBar: BottomNavigationBar(
-//        items: <BottomNavigationBarItem>[
-//          BottomNavigationBarItem(
-//              icon: Icon(Icons.directions_car), title: Text("List car")),
-//          BottomNavigationBarItem(
-//              icon: Icon(Icons.directions), title: Text("vai")),
-//        ],
-//        backgroundColor: Colors.lightBlue,
-//      ),
-
       body: Container(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
@@ -145,7 +137,9 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 child: SizedBox(
                   child: isLoggedIn
-                      ? Text("Logged in as: ${prof}")
+                      ? Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => ControladorPagina()),
+                        )
                       : RaisedButton(
                           child: (Text(
                             "Login with Facebook",
