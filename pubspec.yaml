@@ -42,6 +42,8 @@ flutter:
     - assets/images/initial.jpg
     - assets/images/background.jpg
     - assets/images/me.jpg
+    - assets/images/tesla.jpg
+    - assets/images/garage.jpg
   fonts:
     - family: GoogleSans
       fonts:
