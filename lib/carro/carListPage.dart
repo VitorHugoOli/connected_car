@@ -1,27 +1,30 @@
-import 'package:connected_car/garagem/garagemPage.dart';
-import 'package:connected_car/models/Garagem.dart';
+import 'package:connected_car/models/Carro.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatefulWidget {
+import 'carPage.dart';
+import 'carRegisterPage.dart';
+
+class CarListPage extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _CarListPageState createState() => _CarListPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  Garagem garagem1 = new Garagem(
-      01, 'Casa', 'Vitor', 'Rua Aimara 318', 'YgUY899uH89');
-  Garagem garagem2 = new Garagem(02, 'Casa na Praia', 'Thiago',
-      'Rua Saturno 121', 'YgUY899uH89');
-  Garagem garagem3 = new Garagem(
-      03, 'Predio', 'Thiago', 'Rua Alem 10', 'YgUY899uH89');
-  List<Garagem> listaGaragem = new List<Garagem>();
+class _CarListPageState extends State<CarListPage> {
   bool mock = true;
+  Carros car = new Carros(
+      01, 'Jucelino', 'vitor', 'Belina', 'HiOnIOh89Y77RFtyu', 12, 14);
+  Carros car2 = new Carros(
+      02, 'Alfred', 'Thiago', 'Palio 99', 'GgIUGibKJoiY97y786656', 22, 20);
+  Carros car3 = new Carros(03, 'Jose', 'Thiago', 'Kombi', 'UJguyGUt6778olLMiyutf5', 2, 5);
+  List<Carros> listaCarros = new List<Carros>();
 
   Widget _buildFloatButton() {
     return FloatingActionButton(
       heroTag: null,
       onPressed: () async {
-        print("AUTH");
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => carRegister()),
+        );
       },
       materialTapTargetSize: MaterialTapTargetSize.padded,
       backgroundColor: Colors.blue,
@@ -29,21 +32,20 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCard(String garageName, String garageSubTitle, int garageUID) {
+  Widget _buildCard(String carName, String carSubTitle, int carUID) {
     return Card(
       elevation: 8.0,
       margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(0, 100, 0, 0.6),
+          color: Color.fromRGBO(0, 0, 100, 0.6),
         ),
-        child: _buildBodyCard(garageName, garageSubTitle, garageUID),
+        child: _buildBodyCard(carName, carSubTitle, carUID),
       ),
     );
   }
 
-  Widget _buildBodyCard(
-      String garageName, String garageSubTitle, int garageUID) {
+  Widget _buildBodyCard(String carName, String carSubTitle, int carUID) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
       leading: Container(
@@ -54,22 +56,22 @@ class _HomePageState extends State<HomePage> {
         child: _buildProfileCarImage(),
       ),
       title: Text(
-        garageName, //Nome Da Garagem
+        carName, //Nome Da Garagem
         style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
       // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
       subtitle: Row(
         children: <Widget>[
-          Text(garageSubTitle, style: TextStyle(color: Colors.white))
-          ////SubTitle Garagem
+          Text("Dono: " + carSubTitle,
+              style: TextStyle(color: Colors.white)) ////SubTitle Garagem
         ],
       ),
       trailing:
           Icon(Icons.keyboard_arrow_right, color: Colors.white, size: 30.0),
       onTap: () {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => garagePage(nome: garageName,)),
+          MaterialPageRoute(builder: (context) => CarPage(nome: carName,)),
         );
       },
     );
@@ -81,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       height: 100.0,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/garage.jpg'),
+          image: AssetImage('assets/images/tesla.jpg'),
           fit: BoxFit.cover,
         ),
         borderRadius: BorderRadius.circular(100.0),
@@ -93,21 +95,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildListaCard(List<Garagem> lista) {
+  Widget _buildListaCard(List<Carros> lista) {
     return ListView.builder(
       itemCount: lista.length,
       itemBuilder: (context, index) {
         return _buildCard(
-            lista[index].nome, lista[index].endereco, lista[index].uid);
+            lista[index].apelido, lista[index].proprietario, lista[0].uid);
       },
     );
   }
 
   void mockTest(){
     if (mock){
-      listaGaragem.add(garagem1);
-      listaGaragem.add(garagem2);
-      listaGaragem.add(garagem3);
+      listaCarros.add(car);
+      listaCarros.add(car2);
+      listaCarros.add(car3);
       mock=false;
     }
   }
@@ -119,21 +121,21 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          "Lista de Garagens",
-          style: TextStyle(
-            fontFamily: 'GoogleSans',
-            fontSize: 30,
+          "Lista de Carros",
+          style: TextStyle( fontFamily: 'GoogleSans',
+            fontSize: 35 ,
             color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
+            fontWeight: FontWeight.bold,),
         ),
         backgroundColor: Color.fromRGBO(255, 255, 255, 1),
         elevation: 0,
       ),
       body: Container(
-        child: _buildListaCard(listaGaragem),
+        child:_buildListaCard(listaCarros),
       ),
       floatingActionButton: _buildFloatButton(),
     );
   }
 }
+
+

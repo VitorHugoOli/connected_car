@@ -1,25 +1,21 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:connected_car/models/Carro.dart';
 import 'package:flutter/material.dart';
 
-class CarPage extends StatefulWidget {
-  CarPage({Key key, this.nome}) : super(key: key);
+class garagePage extends StatefulWidget {
+  garagePage({Key key, this.nome}) : super(key: key);
   final String nome;
-
   @override
-  _CarPageState createState() => _CarPageState();
+  _garagePageState createState() => _garagePageState();
 }
 
-class _CarPageState extends State<CarPage> {
+class _garagePageState extends State<garagePage> {
 
-  String _idade = "20 Meses";
-  String _dono = "Jucabino";
-  final String _Entradas = "173";
-  final String _Saidas = "100";
+  String _propriedade = "20 Meses";
+  String _endereco = "Rua Saturno 121, Portal Do sol";
+//  final List<Carros> _carros = ;
+  final String _totalUsado = "100";
   final String _Casa = "Barroco do Judas";
-  FirebaseUser user;
-  DocumentSnapshot dataUser;
-
 
 
   Widget _buildCoverImage(Size screenSize) {
@@ -27,7 +23,7 @@ class _CarPageState extends State<CarPage> {
       height: screenSize.height / 2.6,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('assets/images/tesla.jpg'),
+          image: AssetImage('assets/images/garage.jpg'),
           fit: BoxFit.cover,
         ),
       ),
@@ -47,7 +43,6 @@ class _CarPageState extends State<CarPage> {
       style: _nameTextStyle,
     );
   }
-
 
   Widget _buildBio(BuildContext context, String Titulo, String Conteudo) {
     TextStyle conteudoTextStyle = TextStyle(
@@ -160,15 +155,15 @@ class _CarPageState extends State<CarPage> {
                 SizedBox(height: 140),
                 _buildFullName(),
                 SizedBox(height: 20),
-                _buildBio(context, 'Idade', _idade),
+                _buildBio(context, 'Proprietario', _propriedade),
                 _buildSeparator(screenSize),
-                _buildBio(context, 'Dono', _dono),
+                _buildBio(context, 'Edereço', _endereco),
                 _buildSeparator(screenSize),
                 _buildBio(context, 'Casa', _Casa),
                 _buildSeparator(screenSize),
-                _buildBio(context, 'Entradas', _Entradas),
-                _buildSeparator(screenSize),
-                _buildBio(context, 'Saidas', _Saidas),
+//                _buildBio(context, 'Entradas', _carros),
+//                _buildSeparator(screenSize),
+                _buildBio(context, 'Total de Usos', _totalUsado),
                 _buildSeparator(screenSize),
                 SizedBox(height: 20),
                 _buildbuttonEdit()

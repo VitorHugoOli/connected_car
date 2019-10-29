@@ -1,4 +1,4 @@
-import 'package:connected_car/carro/carPage.dart';
+import 'package:connected_car/carro/carListPage.dart';
 import 'package:connected_car/garagem/garageListPage.dart';
 import 'package:connected_car/usuario/userHomePage.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,7 @@ class _ControladorPaginaState extends State<ControladorPagina> {
 
   static List<Widget> widgetOptions = <Widget>[
     UserPage(),
-    CarPage(),
+    CarListPage(),
     HomePage(),
   ];
 
