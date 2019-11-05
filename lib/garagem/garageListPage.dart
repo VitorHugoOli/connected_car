@@ -2,6 +2,8 @@ import 'package:connected_car/garagem/garagemPage.dart';
 import 'package:connected_car/models/Garagem.dart';
 import 'package:flutter/material.dart';
 
+import 'garageRegisterPage.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -21,6 +23,9 @@ class _HomePageState extends State<HomePage> {
     return FloatingActionButton(
       heroTag: null,
       onPressed: () async {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => garagemRegister()),
+        );
         print("AUTH");
       },
       materialTapTargetSize: MaterialTapTargetSize.padded,
