@@ -1,3 +1,4 @@
+import 'package:connected_car/service/conexaoBlue.dart';
 import 'package:connected_car/service/loader.dart';
 import 'package:flutter/material.dart';
 
@@ -134,6 +135,7 @@ Widget _buildTextoPasso4() {
 }
 
 Widget _buildPasso4() {
+  ConexaoBlue blue = new ConexaoBlue(_passwordWifi,_nameWifi);
   return Column(
     children: <Widget>[
       _buildTextoPasso4(),
